@@ -1,5 +1,9 @@
 import { FastifyInstance } from "fastify";
-import { createAddressHandler } from "./address.controller";
+import {
+  createAddressHandler,
+  getAddressById,
+  getAddressesHandler,
+} from "./address.controller";
 import { $ref } from "./address.schema";
 
 async function addressRoutes(server: FastifyInstance) {
@@ -15,6 +19,22 @@ async function addressRoutes(server: FastifyInstance) {
       },
     },
     createAddressHandler
+  );
+
+  server.get(
+    "/",
+    {
+      preHandler: [server.auth],
+    },
+    getAddressesHandler
+  );
+
+  server.get(
+    "/:id",
+    {
+      preHandler: [server.auth],
+    },
+    getAddressById
   );
 }
 

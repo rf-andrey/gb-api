@@ -10,3 +10,17 @@ export async function createAddress(
 
   return address;
 }
+
+export async function findAddresses() {
+  return prisma.address.findMany();
+}
+
+export async function findAddress(id: number) {
+  const address = await prisma.address.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  return address;
+}
