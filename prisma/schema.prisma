@@ -19,9 +19,9 @@ model Category {
 
 model User {
   id            Int       @id @default(autoincrement()) @map("cliente_id")
-  email         String?   @unique @db.VarChar(50)
-  username      String?   @unique @db.VarChar(15)
-  password      String?   @db.VarChar(20) @map("senha")
+  email         String    @unique @db.VarChar(50)
+  username      String    @unique @db.VarChar(15)
+  password      String    @db.VarChar(72) @map("senha")
   name          String?   @db.VarChar(200) @map("nome")
   cpf           String    @unique @db.VarChar(11)
   telephone     String?   @db.VarChar(11) @map("telefone")
