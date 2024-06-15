@@ -4,6 +4,9 @@ import fastify, {
   FastifyRequest,
 } from "fastify";
 import fastifyJwt from "@fastify/jwt";
+import swagger from "@fastify/swagger";
+import swaggerUI from "@fastify/swagger-ui";
+import { withRefResolver } from "fastify-zod";
 
 import { userSchemas } from "./modules/user/user.schema";
 import { addressSchemas } from "./modules/address/address.schema";
@@ -18,6 +21,8 @@ import categoryRoutes from "./modules/category/category.route";
 import productRoutes from "./modules/product/product.route";
 import orderRoutes from "./modules/order/order.route";
 import orderProductRoutes from "./modules/orderProduct/orderProduct.route";
+
+import { version } from "../package.json";
 
 declare module "fastify" {
   export interface FastifyInstance {
@@ -39,6 +44,23 @@ export const server: FastifyInstance = fastify();
 
 server.register(fastifyJwt, {
   secret: process.env["JWT_SECRET"] ?? "",
+});
+
+server.register(
+  swagger,
+  withRefResolver({
+    openapi: {
+      info: {
+        title: "GB API",
+        description: "",
+        version,
+      },
+    },
+  })
+);
+server.register(swaggerUI, {
+  routePrefix: "/swagger",
+  staticCSP: true,
 });
 
 server.decorate(

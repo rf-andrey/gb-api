@@ -14,19 +14,41 @@ async function categoryRoutes(server: FastifyInstance) {
     "/",
     {
       preHandler: [server.auth],
+      schema: {
+        tags: ["Categories"],
+      },
     },
     createCategoryHandler
   );
 
-  server.get("/", { preHandler: [server.auth] }, getCategoriesHandler);
+  server.get(
+    "/",
+    {
+      preHandler: [server.auth],
+      schema: {
+        tags: ["Categories"],
+      },
+    },
+    getCategoriesHandler
+  );
 
-  server.get("/:id", { preHandler: [server.auth] }, getCategoryByIdHandler);
+  server.get(
+    "/:id",
+    {
+      preHandler: [server.auth],
+      schema: {
+        tags: ["Categories"],
+      },
+    },
+    getCategoryByIdHandler
+  );
 
   server.put(
     "/:id",
     {
       preHandler: [server.auth],
       schema: {
+        tags: ["Categories"],
         body: $ref("categorySchema"),
         response: {
           200: $ref("categoryResponseSchema"),
@@ -36,7 +58,16 @@ async function categoryRoutes(server: FastifyInstance) {
     updateCategoryHandler
   );
 
-  server.delete("/:id", deleteCategoryHandler);
+  server.delete(
+    "/:id",
+    {
+      preHandler: [server.auth],
+      schema: {
+        tags: ["Categories"],
+      },
+    },
+    deleteCategoryHandler
+  );
 }
 
 export default categoryRoutes;

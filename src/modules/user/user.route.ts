@@ -13,6 +13,7 @@ async function userRoutes(server: FastifyInstance) {
     "/",
     {
       schema: {
+        tags: ["Users"],
         body: $ref("createUserSchema"),
         response: {
           201: $ref("createUserResponseSchema"),
@@ -26,6 +27,7 @@ async function userRoutes(server: FastifyInstance) {
     "/login",
     {
       schema: {
+        tags: ["Users"],
         body: $ref("loginSchema"),
         response: {
           200: $ref("loginResponseSchema"),
@@ -35,13 +37,23 @@ async function userRoutes(server: FastifyInstance) {
     loginHandler
   );
 
-  server.get("/", getUsersHandler);
+  server.get(
+    "/",
+    {
+      preHandler: [server.auth],
+      schema: {
+        tags: ["Users"],
+      },
+    },
+    getUsersHandler
+  );
 
   server.put(
     "/:id",
     {
       preHandler: [server.auth],
       schema: {
+        tags: ["Users"],
         body: $ref("updateUserSchema"),
         response: {
           200: $ref("updateUserResponseSchema"),
@@ -51,7 +63,11 @@ async function userRoutes(server: FastifyInstance) {
     updateUserHandler
   );
 
-  server.delete("/:id", { preHandler: [server.auth] }, deleteUserHandler);
+  server.delete(
+    "/:id",
+    { preHandler: [server.auth], schema: { tags: ["Users"] } },
+    deleteUserHandler
+  );
 }
 
 export default userRoutes;

@@ -14,6 +14,7 @@ async function orderRoutes(server: FastifyInstance) {
     {
       preHandler: [server.auth],
       schema: {
+        tags: ["Orders"],
         body: $ref("orderSchema"),
         response: {
           201: $ref("orderResponseSchema"),
@@ -27,6 +28,9 @@ async function orderRoutes(server: FastifyInstance) {
     "/",
     {
       preHandler: [server.auth],
+      schema: {
+        tags: ["Orders"],
+      },
     },
     getOrderesHandler
   );
@@ -35,6 +39,9 @@ async function orderRoutes(server: FastifyInstance) {
     "/:id",
     {
       preHandler: [server.auth],
+      schema: {
+        tags: ["Orders"],
+      },
     },
     getOrderByIdHandler
   );
@@ -44,6 +51,7 @@ async function orderRoutes(server: FastifyInstance) {
     {
       preHandler: [server.auth],
       schema: {
+        tags: ["Orders"],
         body: $ref("orderSchema"),
         response: {
           200: $ref("orderResponseSchema"),
@@ -53,7 +61,16 @@ async function orderRoutes(server: FastifyInstance) {
     updateOrderHandler
   );
 
-  server.delete("/:id", deleteOrderHandler);
+  server.delete(
+    "/:id",
+    {
+      preHandler: [server.auth],
+      schema: {
+        tags: ["Orders"],
+      },
+    },
+    deleteOrderHandler
+  );
 }
 
 export default orderRoutes;

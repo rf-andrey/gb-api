@@ -14,6 +14,7 @@ async function addressRoutes(server: FastifyInstance) {
     {
       preHandler: [server.auth],
       schema: {
+        tags: ["Addresses"],
         body: $ref("addressSchema"),
         response: {
           201: $ref("addressResponseSchema"),
@@ -27,6 +28,9 @@ async function addressRoutes(server: FastifyInstance) {
     "/",
     {
       preHandler: [server.auth],
+      schema: {
+        tags: ["Addresses"],
+      },
     },
     getAddressesHandler
   );
@@ -35,6 +39,9 @@ async function addressRoutes(server: FastifyInstance) {
     "/:id",
     {
       preHandler: [server.auth],
+      schema: {
+        tags: ["Addresses"],
+      },
     },
     getAddressByIdHandler
   );
@@ -44,6 +51,7 @@ async function addressRoutes(server: FastifyInstance) {
     {
       preHandler: [server.auth],
       schema: {
+        tags: ["Addresses"],
         body: $ref("addressSchema"),
         response: {
           200: $ref("addressResponseSchema"),
@@ -53,7 +61,16 @@ async function addressRoutes(server: FastifyInstance) {
     updateAddressHandler
   );
 
-  server.delete("/:id", deleteAddressHandler);
+  server.delete(
+    "/:id",
+    {
+      preHandler: [server.auth],
+      schema: {
+        tags: ["Addresses"],
+      },
+    },
+    deleteAddressHandler
+  );
 }
 
 export default addressRoutes;

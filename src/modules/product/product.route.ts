@@ -14,6 +14,7 @@ async function productRoutes(server: FastifyInstance) {
     {
       preHandler: [server.auth],
       schema: {
+        tags: ["Products"],
         body: $ref("productSchema"),
         response: {
           201: $ref("productResponseSchema"),
@@ -27,6 +28,9 @@ async function productRoutes(server: FastifyInstance) {
     "/",
     {
       preHandler: [server.auth],
+      schema: {
+        tags: ["Products"],
+      },
     },
     getProductsHandler
   );
@@ -35,6 +39,9 @@ async function productRoutes(server: FastifyInstance) {
     "/:id",
     {
       preHandler: [server.auth],
+      schema: {
+        tags: ["Products"],
+      },
     },
     getProductByIdHandler
   );
@@ -44,6 +51,7 @@ async function productRoutes(server: FastifyInstance) {
     {
       preHandler: [server.auth],
       schema: {
+        tags: ["Products"],
         body: $ref("productSchema"),
         response: {
           200: $ref("productResponseSchema"),
@@ -53,7 +61,16 @@ async function productRoutes(server: FastifyInstance) {
     updateProductHandler
   );
 
-  server.delete("/:id", deleteProductHandler);
+  server.delete(
+    "/:id",
+    {
+      preHandler: [server.auth],
+      schema: {
+        tags: ["Products"],
+      },
+    },
+    deleteProductHandler
+  );
 }
 
 export default productRoutes;
