@@ -10,12 +10,14 @@ import { addressSchemas } from "./modules/address/address.schema";
 import { categorySchemas } from "./modules/category/category.schema";
 import { productSchemas } from "./modules/product/product.schema";
 import { orderSchemas } from "./modules/order/order.schema";
+import { orderProductSchemas } from "./modules/orderProduct/orderProduct.schema";
 
 import userRoutes from "./modules/user/user.route";
 import addressRoutes from "./modules/address/address.route";
 import categoryRoutes from "./modules/category/category.route";
 import productRoutes from "./modules/product/product.route";
 import orderRoutes from "./modules/order/order.route";
+import orderProductRoutes from "./modules/orderProduct/orderProduct.route";
 
 declare module "fastify" {
   export interface FastifyInstance {
@@ -57,6 +59,7 @@ async function main() {
     ...categorySchemas,
     ...productSchemas,
     ...orderSchemas,
+    ...orderProductSchemas,
   ]) {
     server.addSchema(schema);
   }
@@ -66,6 +69,7 @@ async function main() {
   server.register(categoryRoutes, { prefix: "api/categories" });
   server.register(productRoutes, { prefix: "api/products" });
   server.register(orderRoutes, { prefix: "api/orders" });
+  server.register(orderProductRoutes, { prefix: "api/orderProducts" });
 
   server.listen({ port: 3000 }, (err) => {
     if (err) {

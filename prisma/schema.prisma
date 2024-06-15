@@ -42,7 +42,7 @@ model Address {
   complement    String?     @db.VarChar(100) @map("complemento")
   uf            String?     @db.VarChar(2)
   userId        Int         @map("cliente_id")
-  user          User    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@map("endereco")
 }
@@ -69,7 +69,7 @@ model Product {
   createdAt       DateTime?        @default(now()) @db.Date @map("data_cadastro_produto")
   categoryId      Int              @map("categoria_id")
   image           String?          @db.VarChar @map("imagem")
-  categoria       Category         @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  category        Category         @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   orderProduct    OrderProduct[]
 
   @@map("produto")
@@ -77,11 +77,10 @@ model Product {
 
 model OrderProduct {
   id            Int           @id @default(autoincrement()) @map("produto_pedido_id")
-  amount        Int?          @map("qtd_produto_pedido")
-  price         Decimal?      @db.Decimal @map("preco_produto_pedido")
+  quantity      Int?          @map("qtd_produto_pedido")
   productId     Int?          @map("produto_id")
   orderId       Int?          @map("pedido_id")
-  order         Order?        @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  order         Order?        @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   produto       Product?      @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@map("produto_pedido")
