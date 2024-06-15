@@ -40,6 +40,7 @@ async function userRoutes(server: FastifyInstance) {
   server.put(
     "/:id",
     {
+      preHandler: [server.auth],
       schema: {
         body: $ref("updateUserSchema"),
         response: {
@@ -50,7 +51,7 @@ async function userRoutes(server: FastifyInstance) {
     updateUserHandler
   );
 
-  server.delete("/:id", deleteUserHandler);
+  server.delete("/:id", { preHandler: [server.auth] }, deleteUserHandler);
 }
 
 export default userRoutes;
