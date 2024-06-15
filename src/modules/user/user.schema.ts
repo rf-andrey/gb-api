@@ -26,6 +26,13 @@ const createUserResponseSchema = z.object({
   ...userCore,
 });
 
+const updateUserSchema = z.object({
+  telephone: userCore.telephone.optional(),
+  password: z.string().optional(),
+});
+
+const updateUserResponseSchema = createUserResponseSchema;
+
 const loginSchema = z.object({
   username: z.string(),
   password: z.string(),
@@ -39,6 +46,8 @@ export const { schemas: userSchemas, $ref } = buildJsonSchemas(
   {
     createUserSchema,
     createUserResponseSchema,
+    updateUserSchema,
+    updateUserResponseSchema,
     loginSchema,
     loginResponseSchema,
   },
@@ -47,3 +56,4 @@ export const { schemas: userSchemas, $ref } = buildJsonSchemas(
 
 export type LoginInput = z.infer<typeof loginSchema>;
 export type CreateUserInput = z.infer<typeof createUserSchema>;
+export type UpdateUserInput = z.infer<typeof updateUserSchema>;

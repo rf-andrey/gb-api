@@ -29,3 +29,31 @@ export async function findUsers() {
     },
   });
 }
+
+export async function updateUser({
+  id,
+  telephone,
+  password,
+}: UpdateUserInput & { id: number }) {
+  const user = await prisma.user.update({
+    where: {
+      id,
+    },
+    data: {
+      telephone,
+      password,
+    },
+  });
+
+  return user;
+}
+
+export async function deleteUser(id: number) {
+  const user = await prisma.user.delete({
+    where: {
+      id,
+    },
+  });
+
+  return user;
+}

@@ -1,6 +1,12 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { createUser, findUserByUsername, findUsers } from "./user.service";
-import { CreateUserInput, LoginInput } from "./user.schema";
+import {
+  createUser,
+  deleteUser,
+  findUserByUsername,
+  findUsers,
+  updateUser,
+} from "./user.service";
+import { CreateUserInput, LoginInput, UpdateUserInput } from "./user.schema";
 import bcrypt from "bcrypt";
 import { server } from "../../server";
 
@@ -52,4 +58,44 @@ export async function getUsersHandler() {
   const users = await findUsers();
 
   return users;
+}
+
+export async function updateUserHandler(
+  request: FastifyRequest<{ Body: UpdateUserInput; Params: { id: string } }>,
+  reply: FastifyReply
+) {
+  try {
+    const {
+      body: { telephone, password },
+      params: { id },
+    } = request;
+
+    const requestId = parseInt(id);
+
+    const user = await updateUser({
+      id: requestId,
+      telephone,
+      password,
+    });
+
+    return reply.code(200).send(user);
+  } catch (err) {
+    console.error(err);
+    return reply.code(500).send(err); //TODO: tratar status codes
+  }
+}
+
+export async function deleteUserHandler(
+  request: FastifyRequest<{ Params: { id: string } }>,
+  reply: FastifyReply
+) {
+  const {
+    params: { id },
+  } = request;
+
+  const requestId = parseInt(id);
+
+  const user = await deleteUser(requestId);
+
+  return reply.code(200).send(user);
 }
