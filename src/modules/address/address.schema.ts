@@ -11,21 +11,21 @@ const addressCore = {
   uf: z.string().length(2),
 };
 
-const createAddressSchema = z.object({
+const addressSchema = z.object({
   ...addressCore,
 });
 
-const createAddressResponseSchema = z.object({
+const addressResponseSchema = z.object({
   id: z.number(),
   ...addressCore,
 });
 
 export const { schemas: addressSchemas, $ref } = buildJsonSchemas(
   {
-    createAddressSchema,
-    createAddressResponseSchema,
+    addressSchema,
+    addressResponseSchema,
   },
   { $id: "AddressSchema" }
 );
 
-export type CreateAddressInput = z.infer<typeof createAddressSchema>;
+export type AddressInput = z.infer<typeof addressSchema>;

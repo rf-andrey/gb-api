@@ -1,10 +1,16 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { createAddress, findAddress, findAddresses } from "./address.service";
-import { CreateAddressInput } from "./address.schema";
+import {
+  createAddress,
+  deleteAddress,
+  findAddress,
+  findAddresses,
+  updateAddress,
+} from "./address.service";
+import { AddressInput } from "./address.schema";
 
 export async function createAddressHandler(
   request: FastifyRequest<{
-    Body: CreateAddressInput;
+    Body: AddressInput;
   }>,
   reply: FastifyReply
 ) {
@@ -27,7 +33,7 @@ export async function getAddressesHandler() {
   return addresses;
 }
 
-export async function getAddressById(
+export async function getAddressByIdHandler(
   request: FastifyRequest<{ Params: { id: string } }>
 ) {
   const {
@@ -39,4 +45,40 @@ export async function getAddressById(
   const address = await findAddress(requestId);
 
   return address;
+}
+
+export async function updateAddressHandler(
+  request: FastifyRequest<{ Body: AddressInput; Params: { id: string } }>,
+  reply: FastifyReply
+) {
+  try {
+    const {
+      body,
+      params: { id },
+    } = request;
+
+    const requestId = parseInt(id);
+
+    const address = await updateAddress({ id: requestId, ...body });
+
+    return reply.code(200).send(address);
+  } catch (err) {
+    console.error(err);
+    return reply.code(500).send(err);
+  }
+}
+
+export async function deleteAddressHandler(
+  request: FastifyRequest<{ Params: { id: string } }>,
+  reply: FastifyReply
+) {
+  const {
+    params: { id },
+  } = request;
+
+  const requestId = parseInt(id);
+
+  const address = await deleteAddress(requestId);
+
+  return reply.code(200).send(address);
 }
