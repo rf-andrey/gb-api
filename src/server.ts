@@ -7,11 +7,26 @@ import fastifyJwt from "@fastify/jwt";
 
 import userRoutes from "./modules/user/user.route";
 import { userSchemas } from "./modules/user/user.schema";
-import { env } from "process";
+import { addressSchemas } from "./modules/address/address.schema";
+import addressRoutes from "./modules/address/address.route";
+
+declare module "fastify" {
+  export interface FastifyInstance {
+    auth: any;
+  }
+}
+
+declare module "@fastify/jwt" {
+  interface FastifyJWT {
+    user: {
+      id: number;
+      email: string;
+      username: string;
+    };
+  }
+}
 
 export const server: FastifyInstance = fastify();
-
-const x = process.env.JWT_SECRET;
 
 server.register(fastifyJwt, {
   secret: process.env["JWT_SECRET"] ?? "",
@@ -29,11 +44,12 @@ server.decorate(
 );
 
 async function main() {
-  for (const schema of userSchemas) {
+  for (const schema of [...userSchemas, ...addressSchemas]) {
     server.addSchema(schema);
   }
 
   server.register(userRoutes, { prefix: "api/users" });
+  server.register(addressRoutes, { prefix: "api/addresses" });
 
   server.listen({ port: 3000 }, (err) => {
     if (err) {
