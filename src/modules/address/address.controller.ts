@@ -14,11 +14,13 @@ export async function createAddressHandler(
   }>,
   reply: FastifyReply
 ) {
-  const { body } = request;
-  const user = request.user;
+  const {
+    body,
+    user: { id },
+  } = request;
 
   try {
-    const address = await createAddress({ ...body, userId: request.user.id });
+    const address = await createAddress({ ...body, userId: id });
 
     return reply.code(201).send(address);
   } catch (err) {

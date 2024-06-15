@@ -5,10 +5,13 @@ import fastify, {
 } from "fastify";
 import fastifyJwt from "@fastify/jwt";
 
-import userRoutes from "./modules/user/user.route";
 import { userSchemas } from "./modules/user/user.schema";
 import { addressSchemas } from "./modules/address/address.schema";
+import { categorySchemas } from "./modules/category/category.schema";
+
+import userRoutes from "./modules/user/user.route";
 import addressRoutes from "./modules/address/address.route";
+import categoryRoutes from "./modules/category/category.route";
 
 declare module "fastify" {
   export interface FastifyInstance {
@@ -44,12 +47,17 @@ server.decorate(
 );
 
 async function main() {
-  for (const schema of [...userSchemas, ...addressSchemas]) {
+  for (const schema of [
+    ...userSchemas,
+    ...addressSchemas,
+    ...categorySchemas,
+  ]) {
     server.addSchema(schema);
   }
 
   server.register(userRoutes, { prefix: "api/users" });
   server.register(addressRoutes, { prefix: "api/addresses" });
+  server.register(categoryRoutes, { prefix: "api/categories" });
 
   server.listen({ port: 3000 }, (err) => {
     if (err) {
