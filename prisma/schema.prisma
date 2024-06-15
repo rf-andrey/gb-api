@@ -19,28 +19,30 @@ model Category {
 
 model Customer {
   id            Int       @id @default(autoincrement()) @map("cliente_id")
-  email         String?   @db.VarChar(50)
-  username      String?   @db.VarChar(15)
+  email         String?   @unique @db.VarChar(50)
+  username      String?   @unique @db.VarChar(15)
   password      String?   @db.VarChar(20) @map("senha")
   name          String?   @db.VarChar(200) @map("nome")
   cpf           String    @unique @db.VarChar(11)
   telephone     String?   @db.VarChar(11) @map("telefone")
   birthDate     DateTime? @db.Date @map("data_nascimento")
-  addressId     Int @map("endereco_id")
+  address       Address[]
   order         Order[]
 
   @@map("cliente")
 }
 
 model Address {
-  id            Int     @id @default(autoincrement()) @map("endereco_id")
-  postalCode    String? @db.VarChar(9) @map("cep")
-  street        String? @db.VarChar(100) @map("rua")
-  district      String? @db.VarChar(30) @map("bairro")
-  city          String? @db.VarChar(30) @map("cidade")
-  number        String? @db.VarChar(10) @map("numero")
-  complement    String? @db.VarChar(100) @map("complemento")
-  uf            String? @db.VarChar(2)
+  id            Int         @id @default(autoincrement()) @map("endereco_id")
+  postalCode    String?     @db.VarChar(9) @map("cep")
+  street        String?     @db.VarChar(100) @map("rua")
+  district      String?     @db.VarChar(30) @map("bairro")
+  city          String?     @db.VarChar(30) @map("cidade")
+  number        String?     @db.VarChar(10) @map("numero")
+  complement    String?     @db.VarChar(100) @map("complemento")
+  uf            String?     @db.VarChar(2)
+  customerId    Int         @map("cliente_id")
+  customer      Customer    @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@map("endereco")
 }
