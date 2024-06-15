@@ -18,6 +18,17 @@ export async function findCategory(id: number) {
     where: {
       id,
     },
+    select: {
+      name: true,
+      description: true,
+      product: {
+        select: {
+          name: true,
+          price: true,
+          image: true,
+        },
+      },
+    },
   });
 
   return category;

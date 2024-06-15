@@ -18,6 +18,23 @@ export async function findAddress(id: number) {
     where: {
       id,
     },
+    select: {
+      postalCode: true,
+      street: true,
+      district: true,
+      city: true,
+      number: true,
+      complement: true,
+      uf: true,
+      user: {
+        select: {
+          name: true,
+          username: true,
+          email: true,
+          telephone: true,
+        },
+      },
+    },
   });
 
   return address;

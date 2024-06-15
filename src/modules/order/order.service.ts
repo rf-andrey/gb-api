@@ -18,6 +18,32 @@ export async function findOrder(id: number) {
     where: {
       id,
     },
+    select: {
+      orderNumber: true,
+      totalAmount: true,
+      orderDate: true,
+      status: true,
+      user: {
+        select: {
+          name: true,
+          email: true,
+          telephone: true,
+          address: true,
+        },
+      },
+      orderProduct: {
+        select: {
+          quantity: true,
+          product: {
+            select: {
+              name: true,
+              price: true,
+              image: true,
+            },
+          },
+        },
+      },
+    },
   });
 
   return order;

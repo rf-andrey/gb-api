@@ -10,13 +10,39 @@ export async function createProduct(input: ProductInput) {
 }
 
 export async function findProducts() {
-  return prisma.product.findMany();
+  return prisma.product.findMany({
+    select: {
+      name: true,
+      description: true,
+      price: true,
+      stockAmount: true,
+      image: true,
+      category: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
 }
 
 export async function findProduct(id: number) {
   const product = await prisma.product.findUnique({
     where: {
       id,
+    },
+    select: {
+      name: true,
+      description: true,
+      price: true,
+      stockAmount: true,
+      image: true,
+      category: {
+        select: {
+          name: true,
+          description: true,
+        },
+      },
     },
   });
 
