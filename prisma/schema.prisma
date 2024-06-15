@@ -3,71 +3,84 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
-model categoria {
-  categoria_id        Int       @id @default(autoincrement())
-  nome_categoria      String?   @db.VarChar(20)
-  descricao_categoria String?   @db.VarChar(200)
-  produto             produto[]
+model Category {
+  id            Int       @id @default(autoincrement()) @map("categoria_id")
+  name          String?   @db.VarChar(20) @map("nome_categoria")
+  description   String?   @db.VarChar(200) @map("descricao_categoria")
+  product       Product[]
+
+  @@map("categoria")
 }
 
-model cliente {
-  cliente_id      Int       @id @default(autoincrement())
-  email           String?   @db.VarChar(50)
-  username        String?   @db.VarChar(15)
-  senha           String?   @db.VarChar(20)
-  nome            String?   @db.VarChar(200)
-  cpf             String    @unique @db.VarChar(11)
-  telefone        String?   @db.VarChar(11)
-  data_nascimento DateTime? @db.Date
-  endereco_id     Int
-  pedido          pedido[]
+model Customer {
+  id            Int       @id @default(autoincrement()) @map("cliente_id")
+  email         String?   @db.VarChar(50)
+  username      String?   @db.VarChar(15)
+  password      String?   @db.VarChar(20) @map("senha")
+  name          String?   @db.VarChar(200) @map("nome")
+  cpf           String    @unique @db.VarChar(11)
+  telephone     String?   @db.VarChar(11) @map("telefone")
+  birthDate     DateTime? @db.Date @map("data_nascimento")
+  addressId     Int @map("endereco_id")
+  order         Order[]
+
+  @@map("cliente")
 }
 
-model endereco {
-  endereco_id Int     @id @default(autoincrement())
-  cep         String? @db.VarChar(9)
-  rua         String? @db.VarChar(100)
-  bairro      String? @db.VarChar(30)
-  cidade      String? @db.VarChar(30)
-  numero      String? @db.VarChar(10)
-  complemento String? @db.VarChar(100)
-  uf          String? @db.VarChar(2)
+model Address {
+  id            Int     @id @default(autoincrement()) @map("endereco_id")
+  postalCode    String? @db.VarChar(9) @map("cep")
+  street        String? @db.VarChar(100) @map("rua")
+  district      String? @db.VarChar(30) @map("bairro")
+  city          String? @db.VarChar(30) @map("cidade")
+  number        String? @db.VarChar(10) @map("numero")
+  complement    String? @db.VarChar(100) @map("complemento")
+  uf            String? @db.VarChar(2)
+
+  @@map("endereco")
 }
 
-model pedido {
-  pedido_id          Int              @id @default(autoincrement())
-  numero_pedido      Int?
-  valor_total_pedido Decimal?         @db.Decimal
-  data_pedido        DateTime         @default(now()) @db.Date
-  status             Boolean?
-  cliente_id         Int
-  cliente            cliente          @relation(fields: [cliente_id], references: [cliente_id], onDelete: NoAction, onUpdate: NoAction)
-  produto_pedido     produto_pedido[]
+model Order {
+  id              Int              @id @default(autoincrement()) @map("pedido_id")
+  orderNumber     Int?             @map("numero_pedido")
+  totalAmount     Decimal?         @db.Decimal @map("valor_total_pedido")
+  orderDate       DateTime         @default(now()) @db.Date @map("data_pedido")
+  status          Boolean?
+  customerId      Int              @map("cliente_id")
+  customer        Customer         @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  orderProduct    OrderProduct[]
+
+  @@map("pedido")
 }
 
-model produto {
-  produto_id            Int              @id @default(autoincrement())
-  nome_produto          String?          @db.VarChar(50)
-  descricao_produto     String?          @db.VarChar(200)
-  preco_produto         Decimal?         @db.Decimal
-  qtd_estoque           Int?
-  data_cadastro_produto DateTime?        @default(now()) @db.Date
-  categoria_id          Int
-  imagem                String?          @db.VarChar
-  categoria             categoria        @relation(fields: [categoria_id], references: [categoria_id], onDelete: NoAction, onUpdate: NoAction)
-  produto_pedido        produto_pedido[]
+model Product {
+  id              Int              @id @default(autoincrement()) @map("produto_id")
+  name            String?          @db.VarChar(50) @map("nome_produto")
+  description     String?          @db.VarChar(200) @map("descricao_produto")
+  price           Decimal?         @db.Decimal @map("preco_produto")
+  stockAmount     Int?             @map("qtd_estoque")
+  createdAt       DateTime?        @default(now()) @db.Date @map("data_cadastro_produto")
+  categoryId      Int              @map("categoria_id")
+  image           String?          @db.VarChar @map("imagem")
+  categoria       Category         @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  orderProduct    OrderProduct[]
+
+  @@map("produto")
 }
 
-model produto_pedido {
-  produto_pedido_id    Int      @id @default(autoincrement())
-  qtd_produto_pedido   Int?
-  preco_produto_pedido Decimal? @db.Decimal
-  produto_id           Int?
-  pedido_id            Int?
-  pedido               pedido?  @relation(fields: [pedido_id], references: [pedido_id], onDelete: NoAction, onUpdate: NoAction)
-  produto              produto? @relation(fields: [produto_id], references: [produto_id], onDelete: NoAction, onUpdate: NoAction)
+model OrderProduct {
+  id            Int           @id @default(autoincrement()) @map("produto_pedido_id")
+  amount        Int?          @map("qtd_produto_pedido")
+  price         Decimal?      @db.Decimal @map("preco_produto_pedido")
+  productId     Int?          @map("produto_id")
+  orderId       Int?          @map("pedido_id")
+  order         Order?        @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  produto       Product?      @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("produto_pedido")
 }
