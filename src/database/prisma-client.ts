@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 
 export const prisma = new PrismaClient().$extends({
   query: {
-    customer: {
+    user: {
       $allOperations({ operation, args, query }) {
         if (
           (operation === "create" || operation === "update") &&

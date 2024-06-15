@@ -17,7 +17,7 @@ model Category {
   @@map("categoria")
 }
 
-model Customer {
+model User {
   id            Int       @id @default(autoincrement()) @map("cliente_id")
   email         String?   @unique @db.VarChar(50)
   username      String?   @unique @db.VarChar(15)
@@ -41,8 +41,8 @@ model Address {
   number        String?     @db.VarChar(10) @map("numero")
   complement    String?     @db.VarChar(100) @map("complemento")
   uf            String?     @db.VarChar(2)
-  customerId    Int         @map("cliente_id")
-  customer      Customer    @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  userId        Int         @map("cliente_id")
+  user          User    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@map("endereco")
 }
@@ -53,8 +53,8 @@ model Order {
   totalAmount     Decimal?         @db.Decimal @map("valor_total_pedido")
   orderDate       DateTime         @default(now()) @db.Date @map("data_pedido")
   status          Boolean?
-  customerId      Int              @map("cliente_id")
-  customer        Customer         @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  userId          Int              @map("cliente_id")
+  user            User         @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   orderProduct    OrderProduct[]
 
   @@map("pedido")

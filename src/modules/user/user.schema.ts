@@ -4,7 +4,7 @@ import { buildJsonSchemas } from "fastify-zod";
 import { isValidCpf } from "../../utils/validateCpf";
 import { strings } from "../../utils/strings";
 
-const customerCore = {
+const userCore = {
   email: z.string().email({ message: strings.invalidEmailError }),
   username: z.string(),
   name: z.string(),
@@ -16,22 +16,34 @@ const customerCore = {
   birthDate: z.date(),
 };
 
-const createCustomerSchema = z.object({
-  ...customerCore,
+const createUserSchema = z.object({
+  ...userCore,
   password: z.string(),
 });
 
-const createCustomerResponseSchema = z.object({
+const createUserResponseSchema = z.object({
   id: z.number(),
-  ...customerCore,
+  ...userCore,
 });
 
-export const { schemas: customerSchemas, $ref } = buildJsonSchemas(
+const loginSchema = z.object({
+  username: z.string(),
+  password: z.string(),
+});
+
+const loginResponseSchema = z.object({
+  accessToken: z.string(),
+});
+
+export const { schemas: userSchemas, $ref } = buildJsonSchemas(
   {
-    createCustomerSchema,
-    createCustomerResponseSchema,
+    createUserSchema,
+    createUserResponseSchema,
+    loginSchema,
+    loginResponseSchema,
   },
-  { $id: "CustomerSchema" }
+  { $id: "UserSchema" }
 );
 
-export type CreateCustomerInput = z.infer<typeof createCustomerSchema>;
+export type LoginInput = z.infer<typeof loginSchema>;
+export type CreateUserInput = z.infer<typeof createUserSchema>;

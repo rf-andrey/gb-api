@@ -1,16 +1,16 @@
 import fastify, { FastifyInstance } from "fastify";
 
-import customerRoutes from "./modules/customer/customer.route";
-import { customerSchemas } from "./modules/customer/customer.schema";
+import userRoutes from "./modules/user/user.route";
+import { userSchemas } from "./modules/user/user.schema";
 
 const server: FastifyInstance = fastify();
 
 async function main() {
-  for (const schema of customerSchemas) {
+  for (const schema of userSchemas) {
     server.addSchema(schema);
   }
 
-  server.register(customerRoutes, { prefix: "api/customers" });
+  server.register(userRoutes, { prefix: "api/users" });
 
   server.listen({ port: 3000 }, (err) => {
     if (err) {
