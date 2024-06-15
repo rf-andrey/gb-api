@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { createUser, findUserByUsername } from "./user.service";
+import { createUser, findUserByUsername, findUsers } from "./user.service";
 import { CreateUserInput, LoginInput } from "./user.schema";
 import bcrypt from "bcrypt";
 import { server } from "../../server";
@@ -10,7 +10,7 @@ export async function createUserHandler(
   }>,
   reply: FastifyReply
 ) {
-  const body = request.body;
+  const { body } = request;
 
   try {
     const user = await createUser(body);
@@ -46,4 +46,10 @@ export async function loginHandler(
   };
 
   return { accessToken: server.jwt.sign(payload) };
+}
+
+export async function getUsersHandler() {
+  const users = await findUsers();
+
+  return users;
 }
