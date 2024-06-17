@@ -12,11 +12,11 @@ export async function createProduct(input: ProductInput) {
 export async function findProducts() {
   return prisma.product.findMany({
     select: {
+      id: true,
       name: true,
       description: true,
       price: true,
       stockAmount: true,
-      image: true,
       category: {
         select: {
           name: true,

@@ -41,9 +41,9 @@ export async function getProductByIdHandler(
 
   const requestId = parseInt(id);
 
-  const address = await findProduct(requestId);
+  const product = await findProduct(requestId);
 
-  return address;
+  return product;
 }
 
 export async function updateProductHandler(
