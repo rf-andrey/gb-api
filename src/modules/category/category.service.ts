@@ -26,6 +26,7 @@ export async function findCategory(id: number) {
           name: true,
           price: true,
           image: true,
+          id: true,
         },
       },
     },

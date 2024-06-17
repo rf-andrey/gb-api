@@ -17,6 +17,7 @@ export async function findProducts() {
       description: true,
       price: true,
       stockAmount: true,
+      categoryId: true,
       category: {
         select: {
           name: true,
@@ -37,6 +38,7 @@ export async function findProduct(id: number) {
       price: true,
       stockAmount: true,
       image: true,
+      categoryId: true,
       category: {
         select: {
           name: true,
