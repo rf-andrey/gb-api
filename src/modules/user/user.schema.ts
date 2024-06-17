@@ -13,7 +13,7 @@ const userCore = {
     .length(11)
     .refine((cpf: string) => isValidCpf(cpf), strings.invalidCpfError),
   telephone: z.string().length(11, strings.invalidTelephoneError),
-  birthDate: z.date(),
+  birthDate: z.string().date(),
 };
 
 const createUserSchema = z.object({
@@ -40,6 +40,9 @@ const loginSchema = z.object({
 
 const loginResponseSchema = z.object({
   accessToken: z.string(),
+  username: z.string(),
+  name: z.string(),
+  email: z.string(),
 });
 
 export const { schemas: userSchemas, $ref } = buildJsonSchemas(
