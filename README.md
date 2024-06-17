@@ -26,6 +26,12 @@ yarn migrate
 yarn dev
 ```
 
+A API estará disponível para chamadas em
+
+```
+http://localhost:3333/
+```
+
 ## API
 
 A API possui os seguintes módulos:
@@ -69,3 +75,12 @@ Cada módulo possui:
 Estes arquivos, com exeção do `schema`, dependem apenas do arquivo seguinte na hierarquia, garantindo o mínimo de comportamentos imprevistos ou efeitos colaterais de uma alteração nos módulos.
 
 Isso foi feito visando manter uma clara divisão de responsabilidades entre as diversas partes do projeto, garantindo escalabilidade e fácil compreensão da arquitetura.
+
+### Stack
+
+- Node como biblioteca principal;
+- Fastify como framework para abstração de funcionalidades;
+- Zod para validação de schemas;
+- BCrypt para criptografia de senhas;
+- Prisma ORM para comunicação com a DB;
+- PostgreSQL como SGBD;
