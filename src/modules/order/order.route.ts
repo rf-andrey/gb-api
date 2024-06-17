@@ -3,7 +3,7 @@ import {
   createOrderHandler,
   deleteOrderHandler,
   getOrderByIdHandler,
-  getOrderesHandler,
+  getOrdersHandler,
   updateOrderHandler,
 } from "./order.controller";
 import { $ref } from "./order.schema";
@@ -32,7 +32,7 @@ async function orderRoutes(server: FastifyInstance) {
         tags: ["Orders"],
       },
     },
-    getOrderesHandler
+    getOrdersHandler
   );
 
   server.get(

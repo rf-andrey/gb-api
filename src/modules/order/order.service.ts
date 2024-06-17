@@ -9,8 +9,21 @@ export async function createOrder(input: OrderInput & { userId: number }) {
   return order;
 }
 
-export async function findOrderes() {
-  return prisma.order.findMany();
+export async function findOrders() {
+  return prisma.order.findMany({
+    select: {
+      id: true,
+      orderNumber: true,
+      orderDate: true,
+      totalAmount: true,
+      user: {
+        select: {
+          email: true,
+        },
+      },
+      status: true,
+    },
+  });
 }
 
 export async function findOrder(id: number) {

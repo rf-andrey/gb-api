@@ -3,7 +3,7 @@ import {
   createOrder,
   deleteOrder,
   findOrder,
-  findOrderes,
+  findOrders,
   updateOrder,
 } from "./order.service";
 import { OrderInput } from "./order.schema";
@@ -29,10 +29,10 @@ export async function createOrderHandler(
   }
 }
 
-export async function getOrderesHandler() {
-  const orderes = await findOrderes();
+export async function getOrdersHandler() {
+  const orders = await findOrders();
 
-  return orderes;
+  return orders;
 }
 
 export async function getOrderByIdHandler(
