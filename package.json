@@ -9,6 +9,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/server.ts",
+    "migrate": "prisma migrate dev",
     "test": "jest"
   },
   "dependencies": {
