@@ -26,6 +26,30 @@ export async function findUsers() {
       cpf: true,
       telephone: true,
       birthDate: true,
+      username: true,
+      address: {
+        select: {
+          city: true,
+          uf: true,
+        },
+      },
+    },
+  });
+}
+
+export async function findUser(id: number) {
+  return prisma.user.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      email: true,
+      name: true,
+      id: true,
+      cpf: true,
+      telephone: true,
+      birthDate: true,
+      username: true,
     },
   });
 }

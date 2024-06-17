@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import {
   createUser,
   deleteUser,
+  findUser,
   findUserByUsername,
   findUsers,
   updateUser,
@@ -51,13 +52,27 @@ export async function loginHandler(
     name: user.name,
   };
 
-  return { accessToken: server.jwt.sign(payload) };
+  return { accessToken: server.jwt.sign(payload), ...payload };
 }
 
 export async function getUsersHandler() {
   const users = await findUsers();
 
   return users;
+}
+
+export async function getUserByIdHandler(
+  request: FastifyRequest<{ Params: { id: string } }>
+) {
+  const {
+    params: { id },
+  } = request;
+
+  const requestId = parseInt(id);
+
+  const user = await findUser(requestId);
+
+  return user;
 }
 
 export async function updateUserHandler(

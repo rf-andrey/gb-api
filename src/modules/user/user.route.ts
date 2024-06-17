@@ -2,6 +2,7 @@ import { FastifyInstance } from "fastify";
 import {
   createUserHandler,
   deleteUserHandler,
+  getUserByIdHandler,
   getUsersHandler,
   loginHandler,
   updateUserHandler,
@@ -46,6 +47,17 @@ async function userRoutes(server: FastifyInstance) {
       },
     },
     getUsersHandler
+  );
+
+  server.get(
+    "/:id",
+    {
+      preHandler: [server.auth],
+      schema: {
+        tags: ["Users"],
+      },
+    },
+    getUserByIdHandler
   );
 
   server.put(
