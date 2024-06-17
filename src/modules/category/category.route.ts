@@ -24,7 +24,6 @@ async function categoryRoutes(server: FastifyInstance) {
   server.get(
     "/",
     {
-      preHandler: [server.auth],
       schema: {
         tags: ["Categories"],
       },
@@ -35,7 +34,6 @@ async function categoryRoutes(server: FastifyInstance) {
   server.get(
     "/:id",
     {
-      preHandler: [server.auth],
       schema: {
         tags: ["Categories"],
       },

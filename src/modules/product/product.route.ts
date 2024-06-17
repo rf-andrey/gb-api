@@ -27,7 +27,6 @@ async function productRoutes(server: FastifyInstance) {
   server.get(
     "/",
     {
-      preHandler: [server.auth],
       schema: {
         tags: ["Products"],
       },
@@ -38,7 +37,6 @@ async function productRoutes(server: FastifyInstance) {
   server.get(
     "/:id",
     {
-      preHandler: [server.auth],
       schema: {
         tags: ["Products"],
       },
