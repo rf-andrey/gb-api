@@ -7,6 +7,7 @@ import fastifyJwt from "@fastify/jwt";
 import swagger from "@fastify/swagger";
 import swaggerUI from "@fastify/swagger-ui";
 import { withRefResolver } from "fastify-zod";
+import cors from "@fastify/cors";
 
 import { userSchemas } from "./modules/user/user.schema";
 import { addressSchemas } from "./modules/address/address.schema";
@@ -44,6 +45,18 @@ export const server: FastifyInstance = fastify();
 
 server.register(fastifyJwt, {
   secret: process.env["JWT_SECRET"] ?? "",
+});
+
+await server.register(cors, {
+  origin: true,
+  allowedHeaders: [
+    "Origin",
+    "X-Requested-With",
+    "Accept",
+    "Content-Type",
+    "Authorization",
+  ],
+  methods: ["GET", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
 });
 
 server.register(
@@ -93,12 +106,12 @@ async function main() {
   server.register(orderRoutes, { prefix: "api/orders" });
   server.register(orderProductRoutes, { prefix: "api/orderProducts" });
 
-  server.listen({ port: 3000 }, (err) => {
+  server.listen({ port: 3333 }, (err) => {
     if (err) {
       server.log.error(err);
       process.exit(1);
     }
-    console.log("Server started at http://localhost:3000");
+    console.log("Server started at http://localhost:3333");
   });
 }
 
