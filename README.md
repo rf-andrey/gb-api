@@ -8,7 +8,7 @@ O schema da aplicação pode ser encontrado em `./prisma/schema.prisma`.
 
 Os módulos da aplicação podem ser encontrados em `./src/modules`.
 
-O banco de dados está rodando na AWS.
+O banco de dados está rodando na AWS. Para o correto funcionamento em ambiente local, crie um arquivo `.env` na raiz do projeto, de acordo com o `.env.example`.
 
 ## Comandos
 
